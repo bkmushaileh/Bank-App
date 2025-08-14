@@ -4,7 +4,6 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const CustomLoginButton = () => {
   const handleLogin = () => {
-    //Alert.alert("Custom Login Attempted");
     router.push("/auth/login");
   };
 
@@ -19,9 +18,9 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#44b464",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 15,
     alignItems: "center",
-    width: 250,
+    width: 280,
   },
   buttonText: {
     color: "white",
