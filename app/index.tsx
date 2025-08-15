@@ -1,4 +1,4 @@
-import CustomLoginButton from "@/components/customButton";
+import CustomButton from "@/components/customButton";
 import { router } from "expo-router";
 import LottieView from "lottie-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -13,7 +13,7 @@ export default function Index() {
         style={styles.lottieStyling}
       />
       <View style={styles.buttonContainer}>
-        <CustomLoginButton />
+        <CustomButton text={"Login"} />
         <View style={{ flexDirection: "row" }}>
           <Text>Don't have an account? </Text>
           <TouchableOpacity onPress={() => router.push("/auth/register")}>

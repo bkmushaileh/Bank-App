@@ -1,3 +1,4 @@
+import CustomButton from "@/components/customButton";
 import { router } from "expo-router";
 import React from "react";
 import {
@@ -14,7 +15,7 @@ const register = () => {
     <View style={styles.container}>
       <Image
         source={require("/Users/bashaieralmeshaileh/Developments/bank-app/assets/images/atm-card.png")}
-        style={{ height: 300, width: 300 }}
+        style={{ height: 270, width: 270 }}
       />
 
       <View style={styles.form}>
@@ -38,8 +39,8 @@ const register = () => {
           secureTextEntry
         />
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.registerButton}>Register</Text>
+          <TouchableOpacity>
+            <CustomButton text={"Register"} />
           </TouchableOpacity>
 
           <View
@@ -84,20 +85,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
   },
-  button: {
-    backgroundColor: "#44b464",
-    padding: 15,
-    borderRadius: 15,
-    alignItems: "center",
-    marginTop: 10,
-    width: 280,
-  },
-  registerButton: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
   buttonContainer: {
+    margin: 20,
     gap: 7,
     alignItems: "center",
   },
