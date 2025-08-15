@@ -7,12 +7,13 @@ type customText = {
 };
 
 const CustomButton = (props: customText) => {
-  const handleLogin = () => {
-    router.push("/auth/login");
-  };
-
   return (
-    <TouchableOpacity style={styles.button} onPress={handleLogin}>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => {
+        router.dismissTo("/(tabs)/home");
+      }}
+    >
       <Text style={styles.buttonText}>{props.text}</Text>
     </TouchableOpacity>
   );

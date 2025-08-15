@@ -18,6 +18,12 @@ export default function RootLayout() {
           headerBackTitle: "Main",
         }}
       />
+      <Stack.Screen
+        name="(tabs)"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }
