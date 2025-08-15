@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "bank-app",
+    "name": "Banki",
     "slug": "bank-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/appIcon/Banki-Logo.png",
     "scheme": "bankapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
