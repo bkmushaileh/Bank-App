@@ -5,13 +5,13 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
   const handleLoginButton = () => {
-    alert("login pressed");
+    //alert("login pressed");
     router.dismissTo("/auth/login");
   };
   return (
     <View style={styles.container}>
       <LottieView
-        source={require("/Users/bashaieralmeshaileh/Developments/bank-app/assets/animation/Banking.json")}
+        source={require("@/assets/animation/Banking.json")}
         autoPlay
         loop={true}
         style={styles.lottieStyling}

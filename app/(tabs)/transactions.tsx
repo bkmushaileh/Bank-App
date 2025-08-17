@@ -1,12 +1,9 @@
+import TransactionsScreen from "@/components/(Tabs)/transactions";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 const transactions = () => {
-  return (
-    <View>
-      <Text>transactions</Text>
-    </View>
-  );
+  return <TransactionsScreen />;
 };
 
 export default transactions;

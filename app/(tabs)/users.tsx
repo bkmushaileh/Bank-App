@@ -1,12 +1,9 @@
+import UsersScreen from "@/components/(Tabs)/users";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 const users = () => {
-  return (
-    <View>
-      <Text>users</Text>
-    </View>
-  );
+  return <UsersScreen />;
 };
 
 export default users;
