@@ -1,10 +1,11 @@
 import { register } from "@/api/auth";
+import AuthContext from "@/app/context/AuthContext";
 import CustomButton from "@/components/customButton";
 import userInfo from "@/data/userInfo";
 import { useMutation } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import {
   Image,
@@ -21,14 +22,17 @@ const RegisterScreen = () => {
     image: "",
   });
 
-  const { mutate } = useMutation({
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { mutate, data } = useMutation({
     mutationKey: ["register"],
     mutationFn: register,
     onSuccess: () => {
+      setIsAuthenticated(true);
       console.log("Registered Successfully");
     },
     onError: (err) => {
       console.log("ERRROORRR!!!!!", err);
+      console.log(data);
     },
   });
 
@@ -52,7 +56,7 @@ const RegisterScreen = () => {
     formData.append("username", userInfo.username);
     formData.append("password", userInfo.password);
     formData.append("image", userInfo.image);
-
+    console.log(formData);
     mutate(formData);
   };
   return (

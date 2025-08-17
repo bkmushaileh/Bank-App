@@ -1,7 +1,19 @@
+import { getToken } from "@/api/storage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
+import { useEffect } from "react";
 import { StyleSheet } from "react-native";
+
 export default function RootLayout() {
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = await getToken();
+      if (token) {
+        setIsAuthenticated(true);
+      }
+    };
+    checkToken();
+  }, []);
   const queryClient = new QueryClient();
 
   return (
@@ -38,3 +50,6 @@ const styles = StyleSheet.create({
     color: "#44b464",
   },
 });
+function setIsAuthenticated(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
