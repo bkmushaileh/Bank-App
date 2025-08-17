@@ -1,7 +1,10 @@
 import CustomButton from "@/components/customButton";
+import userInfo from "@/data/userInfo";
+import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
+  Button,
   Image,
   StyleSheet,
   Text,
@@ -9,38 +12,59 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+// import useMutation from ;
 
 const RegisterScreen = () => {
+  const [userInfo, setUserInfo] = useState<userInfo>({
+    username: "",
+    password: "",
+    image: "",
+  });
+  // const {mutate} = useMutation({});
   const handleRegisterButton = () => {
     alert("Register pressed");
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setUserInfo({ ...userInfo, image: result.assets[0].uri });
+    }
   };
   return (
     <View style={styles.container}>
       <Image
-        source={require("@/assets/images/atm-card.png")}
-        style={{ height: 270, width: 270 }}
+        source={{ uri: userInfo.image }}
+        style={{ height: 230, width: 230, borderRadius: "100%" }}
       />
+      <Button title="Pick an image from camera roll" onPress={pickImage} />
 
       <View style={styles.form}>
         <Text style={styles.textTitle}>Account Details</Text>
 
         <TextInput
+          onChangeText={(text) => setUserInfo({ ...userInfo, username: text })}
           placeholder="Please enter your username here.."
           style={styles.input}
           placeholderTextColor={"#d4dfd8"}
         />
+
         <TextInput
-          placeholder="Please enter your email here.."
-          style={styles.input}
-          keyboardType="email-address"
-          placeholderTextColor={"#d4dfd8"}
-        />
-        <TextInput
+          onChangeText={(text) => setUserInfo({ ...userInfo, password: text })}
           placeholder="Please enter your password here.."
           style={styles.input}
           placeholderTextColor={"#d4dfd8"}
           secureTextEntry
         />
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity>
             <CustomButton text={"Register"} onPress={handleRegisterButton} />
@@ -94,3 +118,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+function useMutation(): [any, any] {
+  throw new Error("Function not implemented.");
+}

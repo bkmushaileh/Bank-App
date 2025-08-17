@@ -1,4 +1,4 @@
-import ProfileScreen from "@/components/(Tabs)/profile";
+import ProfileScreen from "@/components/(Tabs)/Profile";
 import React from "react";
 import { StyleSheet } from "react-native";
 

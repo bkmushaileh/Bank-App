@@ -1,4 +1,4 @@
-import TransactionsScreen from "@/components/(Tabs)/transactions";
+import TransactionsScreen from "@/components/(Tabs)/Transactions";
 import React from "react";
 import { StyleSheet } from "react-native";
 

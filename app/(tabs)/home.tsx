@@ -1,4 +1,4 @@
-import HomeScreen from "@/components/(Tabs)/home";
+import HomeScreen from "@/components/(Tabs)/Home";
 import React from "react";
 import { StyleSheet } from "react-native";
 

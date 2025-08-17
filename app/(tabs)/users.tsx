@@ -1,4 +1,4 @@
-import UsersScreen from "@/components/(Tabs)/users";
+import UsersScreen from "@/components/(Tabs)/Users";
 import React from "react";
 import { StyleSheet } from "react-native";
 
