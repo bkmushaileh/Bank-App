@@ -1,19 +1,14 @@
-import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 type customText = {
   text: string;
+  onPress: () => void;
 };
 
 const CustomButton = (props: customText) => {
   return (
-    <TouchableOpacity
-      style={styles.button}
-      onPress={() => {
-        router.dismissTo("/(tabs)/home");
-      }}
-    >
+    <TouchableOpacity style={styles.button} onPress={props.onPress}>
       <Text style={styles.buttonText}>{props.text}</Text>
     </TouchableOpacity>
   );

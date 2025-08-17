@@ -11,6 +11,9 @@ import {
 } from "react-native";
 
 const register = () => {
+  const handleRegisterButton = () => {
+    alert("Register pressed");
+  };
   return (
     <View style={styles.container}>
       <Image
@@ -40,7 +43,7 @@ const register = () => {
         />
         <View style={styles.buttonContainer}>
           <TouchableOpacity>
-            <CustomButton text={"Register"} />
+            <CustomButton text={"Register"} onPress={handleRegisterButton} />
           </TouchableOpacity>
 
           <View

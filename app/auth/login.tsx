@@ -11,6 +11,10 @@ import {
 } from "react-native";
 
 const login = () => {
+  const handleLoginButton = () => {
+    //alert("login pressed");
+    router.dismissTo("/(tabs)/home");
+  };
   return (
     <View style={styles.container}>
       <Image
@@ -35,7 +39,7 @@ const login = () => {
         />
         <View style={styles.buttonContainer}>
           <TouchableOpacity>
-            <CustomButton text={"Login"} />
+            <CustomButton text={"Login"} onPress={handleLoginButton} />
           </TouchableOpacity>
 
           <View

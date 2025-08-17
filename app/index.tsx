@@ -4,6 +4,10 @@ import LottieView from "lottie-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
+  const handleLoginButton = () => {
+    alert("login pressed");
+    router.dismissTo("/auth/login");
+  };
   return (
     <View style={styles.container}>
       <LottieView
@@ -13,7 +17,7 @@ export default function Index() {
         style={styles.lottieStyling}
       />
       <View style={styles.buttonContainer}>
-        <CustomButton text={"Login"} />
+        <CustomButton text={"Login"} onPress={handleLoginButton} />
         <View style={{ flexDirection: "row" }}>
           <Text>Don't have an account? </Text>
           <TouchableOpacity onPress={() => router.push("/auth/register")}>
