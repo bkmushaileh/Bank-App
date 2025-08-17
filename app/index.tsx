@@ -5,7 +5,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
   const handleLoginButton = () => {
-    //alert("login pressed");
     router.dismissTo("/auth/login");
   };
   return (

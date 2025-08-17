@@ -3,7 +3,6 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Octicons from "@expo/vector-icons/Octicons";
 import { Tabs } from "expo-router";
 import React from "react";
-import { StyleSheet } from "react-native";
 
 const _layout = () => {
   return (
@@ -42,6 +41,7 @@ const _layout = () => {
           ),
         }}
       />
+
       <Tabs.Screen
         name="profile"
         options={{
@@ -56,5 +56,3 @@ const _layout = () => {
 };
 
 export default _layout;
-
-const styles = StyleSheet.create({});

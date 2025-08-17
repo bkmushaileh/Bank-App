@@ -1,14 +1,16 @@
 import { register } from "@/api/auth";
 import AuthContext from "@/app/context/AuthContext";
 import CustomButton from "@/components/customButton";
-import userInfo from "@/data/userInfo";
+import { UserInfo } from "@/data/userInfo";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useMutation } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import React, { useContext, useState } from "react";
-
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -16,7 +18,7 @@ import {
   View,
 } from "react-native";
 const RegisterScreen = () => {
-  const [userInfo, setUserInfo] = useState<userInfo>({
+  const [userInfo, setUserInfo] = useState<UserInfo>({
     username: "",
     password: "",
     image: "",
@@ -29,6 +31,7 @@ const RegisterScreen = () => {
     onSuccess: () => {
       setIsAuthenticated(true);
       console.log("Registered Successfully");
+      router.dismissTo("/(tabs)/home");
     },
     onError: (err) => {
       console.log("ERRROORRR!!!!!", err);
@@ -60,16 +63,44 @@ const RegisterScreen = () => {
     mutate(formData);
   };
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
+    >
       <View style={styles.form}>
         <Text style={styles.textTitle}>Account Details</Text>
-        <Image
-          source={{ uri: userInfo.image }}
-          style={{ height: 230, width: 230, borderRadius: "100%" }}
-        />
-        <TouchableOpacity onPress={pickImage}>
-          <Text style={styles.imageText}>Choose your profile image</Text>
-        </TouchableOpacity>
+
+        <View style={{ alignItems: "center", marginBottom: 20 }}>
+          <Image
+            source={
+              userInfo.image
+                ? { uri: userInfo.image }
+                : require("@/assets/images/profile.png")
+            }
+            style={{ height: 180, width: 180, borderRadius: "100%" }}
+          />
+          <TouchableOpacity
+            onPress={pickImage}
+            style={{
+              position: "absolute",
+              bottom: 0, // moves above bottom edge
+              right: "29%",
+              backgroundColor: "#44b464",
+              borderRadius: 20,
+              padding: 8,
+              borderWidth: 2,
+              borderColor: "#fff",
+              elevation: 3, // adds shadow (Android)
+              shadowColor: "#000", // shadow (iOS)
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.4,
+              shadowRadius: 3,
+            }}
+          >
+            <FontAwesome5 name="pen" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
         <TextInput
           onChangeText={(text) => setUserInfo({ ...userInfo, username: text })}
           placeholder="Please enter your username here.."
@@ -103,13 +134,28 @@ const RegisterScreen = () => {
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
+  imagePicked: {
+    position: "absolute",
+    bottom: 0,
+    right: "29%",
+    backgroundColor: "#44b464",
+    borderRadius: 20,
+    padding: 8,
+    borderWidth: 2,
+    borderColor: "#fff",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+  },
   textTitle: {
     fontSize: 20,
     fontWeight: "700",
@@ -122,10 +168,9 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "space-around",
+    justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 80,
+    paddingHorizontal: 5,
   },
   form: {
     width: "90%",

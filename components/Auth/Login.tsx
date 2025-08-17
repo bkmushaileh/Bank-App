@@ -1,7 +1,13 @@
+import { login } from "@/api/auth";
+import AuthContext from "@/app/context/AuthContext";
+import { LoggedUserInfo } from "@/data/userInfo";
+import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -11,27 +17,53 @@ import {
 import CustomButton from "../customButton";
 
 const LoginScreen = () => {
+  const [userInfo, setUserInfo] = useState<LoggedUserInfo>({
+    username: "",
+    password: "",
+  });
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { mutate } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: login,
+    onSuccess: () => {
+      console.log("logged in Successfully");
+      setIsAuthenticated(true);
+      router.dismissTo("/(tabs)/home");
+    },
+    onError: (err) => {
+      console.log("OPPS!! Something went wrong", err);
+    },
+  });
   const handleLoginButton = () => {
-    alert("login pressed");
-    router.dismissTo("/(tabs)/home");
+    console.log(userInfo);
+    mutate(userInfo);
   };
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
+    >
       <Image
         source={require("@/assets/images/atm-card.png")}
         style={{ height: 270, width: 270 }}
       />
 
       <View style={styles.form}>
-        <Text style={styles.textTitle}>Account Details</Text>
+        <Text style={styles.textTitle}>
+          {`Welcome back ${userInfo.username}🫀!`}
+        </Text>
 
         <TextInput
+          onChangeText={(text) => setUserInfo({ ...userInfo, username: text })}
           placeholder="Please enter your username here.."
           style={styles.input}
           placeholderTextColor={"#d4dfd8"}
         />
 
         <TextInput
+          onChangeText={(text) => setUserInfo({ ...userInfo, password: text })}
           placeholder="Please enter your password here.."
           style={styles.input}
           placeholderTextColor={"#d4dfd8"}
@@ -57,7 +89,7 @@ const LoginScreen = () => {
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -71,10 +103,9 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "space-around",
+    justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 80,
+    paddingHorizontal: 5,
   },
   form: {
     width: "90%",
