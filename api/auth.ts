@@ -1,7 +1,7 @@
 import instance from ".";
 
-const register = async () => {
-  const res = await instance.post("/register");
+const register = async (userInfo: FormData) => {
+  const res = await instance.post("/register", userInfo);
   return res;
 };
 

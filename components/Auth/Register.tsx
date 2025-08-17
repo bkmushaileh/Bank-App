@@ -1,10 +1,12 @@
+import { register } from "@/api/auth";
 import CustomButton from "@/components/customButton";
 import userInfo from "@/data/userInfo";
+import { useMutation } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import React, { useState } from "react";
+
 import {
-  Button,
   Image,
   StyleSheet,
   Text,
@@ -12,18 +14,23 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-// import useMutation from ;
-
 const RegisterScreen = () => {
   const [userInfo, setUserInfo] = useState<userInfo>({
     username: "",
     password: "",
     image: "",
   });
-  // const {mutate} = useMutation({});
-  const handleRegisterButton = () => {
-    alert("Register pressed");
-  };
+
+  const { mutate } = useMutation({
+    mutationKey: ["register"],
+    mutationFn: register,
+    onSuccess: () => {
+      console.log("Registered Successfully");
+    },
+    onError: (err) => {
+      console.log("ERRROORRR!!!!!", err);
+    },
+  });
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -39,17 +46,26 @@ const RegisterScreen = () => {
       setUserInfo({ ...userInfo, image: result.assets[0].uri });
     }
   };
+
+  const handleRegister = () => {
+    const formData = new FormData();
+    formData.append("username", userInfo.username);
+    formData.append("password", userInfo.password);
+    formData.append("image", userInfo.image);
+
+    mutate(formData);
+  };
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: userInfo.image }}
-        style={{ height: 230, width: 230, borderRadius: "100%" }}
-      />
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
-
       <View style={styles.form}>
         <Text style={styles.textTitle}>Account Details</Text>
-
+        <Image
+          source={{ uri: userInfo.image }}
+          style={{ height: 230, width: 230, borderRadius: "100%" }}
+        />
+        <TouchableOpacity onPress={pickImage}>
+          <Text style={styles.imageText}>Choose your profile image</Text>
+        </TouchableOpacity>
         <TextInput
           onChangeText={(text) => setUserInfo({ ...userInfo, username: text })}
           placeholder="Please enter your username here.."
@@ -67,7 +83,7 @@ const RegisterScreen = () => {
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity>
-            <CustomButton text={"Register"} onPress={handleRegisterButton} />
+            <CustomButton text={"Register"} onPress={handleRegister} />
           </TouchableOpacity>
 
           <View
@@ -95,6 +111,11 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     paddingVertical: 20,
   },
+  imageText: {
+    color: "#44b464",
+    padding: 8,
+  },
+
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -118,6 +139,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-function useMutation(): [any, any] {
-  throw new Error("Function not implemented.");
-}
