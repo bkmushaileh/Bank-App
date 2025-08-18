@@ -14,5 +14,9 @@ const login = async (userInfo: LoggedUserInfo) => {
   await storeToken(res.data.token);
   return res;
 };
+const getProfile = async () => {
+  const res = await instance.get("/auth/me");
+  return res.data;
+};
 
-export { login, register };
+export { getProfile, login, register };

@@ -44,8 +44,8 @@ const RegisterScreen = () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images", "videos"],
       allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
+      aspect: [3, 4],
+      quality: 0,
     });
 
     console.log(result);
@@ -122,9 +122,7 @@ const RegisterScreen = () => {
         />
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity>
-            <CustomButton text={"Register"} onPress={handleRegister} />
-          </TouchableOpacity>
+          <CustomButton text={"Register"} onPress={handleRegister} />
 
           <View
             style={{

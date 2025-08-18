@@ -28,7 +28,7 @@ const LoginScreen = () => {
     onSuccess: () => {
       console.log("logged in Successfully");
       setIsAuthenticated(true);
-      router.dismissTo("/(tabs)");
+      router.dismissTo("/(tabs)/home");
     },
     onError: (err) => {
       console.log("OPPS!! Something went wrong", err);
@@ -69,9 +69,9 @@ const LoginScreen = () => {
           placeholderTextColor={"#d4dfd8"}
           secureTextEntry
         />
-        <View>
+        <View style={styles.buttonContainer}>
           <CustomButton
-            text={isPending ? "Loging ..." : "Login"}
+            text={isPending ? "Logging ..." : "Login"}
             onPress={handleLoginButton}
           />
 

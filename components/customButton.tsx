@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 
 type customText = {
   text: string;
@@ -8,9 +8,15 @@ type customText = {
 
 const CustomButton = (props: customText) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={props.onPress}>
+    <Pressable
+      style={({ pressed }) => [
+        styles.button,
+        { backgroundColor: pressed ? "green" : "#44b464" }, // change color on press
+      ]}
+      onPress={props.onPress}
+    >
       <Text style={styles.buttonText}>{props.text}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
