@@ -12,7 +12,14 @@ const ProfileScreen = () => {
     <View style={styles.container}>
       <Image source={{ uri: data.image }} style={styles.avatar} />
       <Text style={styles.userText}>Username: {data.username}</Text>
-      <Text style={styles.balanceText}>Balance: {data.balance} KD</Text>
+      <Text
+        style={[
+          styles.balanceText,
+          data.balance < 0 ? styles.negative : styles.positive,
+        ]}
+      >
+        Balance: {data.balance} KD
+      </Text>
     </View>
   );
 };
@@ -21,28 +28,33 @@ export default ProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#f9f9f9",
-    display: "flex",
+    flex: 1,
+    backgroundColor: "#f7f7f7",
     alignItems: "center",
-    margin: 5,
-    padding: 5,
+    justifyContent: "center",
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 200,
+    height: 200,
+    borderRadius: "100%",
     borderWidth: 3,
-    borderColor: "#fff",
-    marginBottom: 10,
+    borderColor: "#44b464",
+    marginBottom: 15,
   },
   userText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "green",
+    color: "#44b464",
   },
   balanceText: {
-    fontSize: 16,
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: "medium",
+  },
+  positive: {
     color: "green",
-    marginTop: 4,
+  },
+  negative: {
+    color: "red",
   },
 });

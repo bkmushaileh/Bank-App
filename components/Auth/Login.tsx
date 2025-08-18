@@ -28,7 +28,7 @@ const LoginScreen = () => {
     onSuccess: () => {
       console.log("logged in Successfully");
       setIsAuthenticated(true);
-      router.dismissTo("/(tabs)/home");
+      router.dismissTo("/(tabs)");
     },
     onError: (err) => {
       console.log("OPPS!! Something went wrong", err);

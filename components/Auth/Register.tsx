@@ -32,7 +32,7 @@ const RegisterScreen = () => {
     onSuccess: () => {
       setIsAuthenticated(true);
       console.log("Registered Successfully");
-      router.dismissTo("/(tabs)/home");
+      router.dismissTo("/(tabs)");
     },
     onError: (err) => {
       console.log("ERRROORRR!!!!!", err);

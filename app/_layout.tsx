@@ -24,7 +24,7 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
         <Stack screenOptions={{ headerTintColor: "#44b464" }}>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="landingPage" options={{ title: "landing" }} />
           <Stack.Screen
             name="auth/login"
             options={{
