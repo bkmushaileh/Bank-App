@@ -12,6 +12,6 @@ interface UserInfo extends LoggedUserInfo {
 interface UserProfile {
   username: string;
   image: string;
-  balance?: number;
+  balance: number;
 }
 export { LoggedUserInfo, UserInfo, UserProfile };

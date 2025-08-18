@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 
 const storeToken = async (token: string) => {
@@ -24,7 +23,5 @@ const deleteToken = async () => {
     console.error("Error deleting token:", error);
   }
 };
-// me
-const token = await AsyncStorage.getItem("token");
 
-export { deleteToken, getToken, storeToken, token };
+export { deleteToken, getToken, storeToken };
