@@ -10,6 +10,7 @@ const register = async (userInfo: FormData) => {
 
 const login = async (userInfo: LoggedUserInfo) => {
   const res = await instance.post("/auth/login", userInfo);
+  console.log(res.data.token);
   await storeToken(res.data.token);
   return res;
 };

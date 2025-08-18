@@ -6,7 +6,8 @@ import AuthContext from "./context/AuthContext";
 
 export default function RootLayout() {
   const queryClient = new QueryClient();
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  console.log(isAuthenticated);
 
   const checkToken = async () => {
     const token = await getToken();

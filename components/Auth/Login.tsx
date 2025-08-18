@@ -22,13 +22,13 @@ const LoginScreen = () => {
     password: "",
   });
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["login"],
     mutationFn: login,
     onSuccess: () => {
       console.log("logged in Successfully");
       setIsAuthenticated(true);
-      router.dismissTo("/(tabs)/home");
+      router.dismissTo("/(tabs)");
     },
     onError: (err) => {
       console.log("OPPS!! Something went wrong", err);
@@ -69,10 +69,11 @@ const LoginScreen = () => {
           placeholderTextColor={"#d4dfd8"}
           secureTextEntry
         />
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity>
-            <CustomButton text={"Login"} onPress={handleLoginButton} />
-          </TouchableOpacity>
+        <View>
+          <CustomButton
+            text={isPending ? "Loging ..." : "Login"}
+            onPress={handleLoginButton}
+          />
 
           <View
             style={{
@@ -121,5 +122,12 @@ const styles = StyleSheet.create({
     margin: 20,
     gap: 7,
     alignItems: "center",
+  },
+  disableButton: {
+    backgroundColor: "#44b46490",
+    padding: 15,
+    borderRadius: 15,
+    alignItems: "center",
+    width: 280,
   },
 });

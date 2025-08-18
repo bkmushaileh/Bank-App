@@ -89,15 +89,15 @@ const RegisterScreen = () => {
             onPress={pickImage}
             style={{
               position: "absolute",
-              bottom: 0, // moves above bottom edge
+              bottom: 0,
               right: "29%",
               backgroundColor: "#44b464",
               borderRadius: 20,
               padding: 8,
               borderWidth: 2,
               borderColor: "#fff",
-              elevation: 3, // adds shadow (Android)
-              shadowColor: "#000", // shadow (iOS)
+              elevation: 3,
+              shadowColor: "#000",
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.4,
               shadowRadius: 3,
