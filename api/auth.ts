@@ -1,4 +1,5 @@
-import { LoggedUserInfo } from "@/data/userInfo";
+import { LoggedUserInfo, UserProfile } from "@/data/userInfo";
+import axios from "axios";
 import instance from ".";
 import { storeToken } from "./storage";
 
@@ -13,5 +14,11 @@ const login = async (userInfo: LoggedUserInfo) => {
   await storeToken(res.data.token);
   return res;
 };
+// me
 
-export { login, register };
+const profile = async (userInfo: UserProfile) => {
+  const res = await axios.get("/auth/me");
+  await storeToken(res.data.token);
+  return res;
+};
+export { login, profile, register };

@@ -8,5 +8,10 @@ interface UserInfo extends LoggedUserInfo {
   password: string;
   image: string;
 }
-
-export { LoggedUserInfo, UserInfo };
+// me
+interface UserProfile {
+  username: string;
+  image: string;
+  balance?: number;
+}
+export { LoggedUserInfo, UserInfo, UserProfile };

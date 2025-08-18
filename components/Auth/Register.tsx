@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 const RegisterScreen = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>({
     username: "",
@@ -58,7 +59,11 @@ const RegisterScreen = () => {
     const formData = new FormData();
     formData.append("username", userInfo.username);
     formData.append("password", userInfo.password);
-    formData.append("image", userInfo.image);
+    formData.append("image", {
+      uri: userInfo.image,
+      name: "profile.jpg",
+      type: "image/jpeg",
+    } as any);
     console.log(formData);
     mutate(formData);
   };
@@ -78,7 +83,7 @@ const RegisterScreen = () => {
                 ? { uri: userInfo.image }
                 : require("@/assets/images/profile.png")
             }
-            style={{ height: 180, width: 180, borderRadius: "100%" }}
+            style={{ height: 180, width: 180, borderRadius: 100 }}
           />
           <TouchableOpacity
             onPress={pickImage}
