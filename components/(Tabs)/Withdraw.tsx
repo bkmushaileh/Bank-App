@@ -1,13 +1,20 @@
 import { withdrawFunds } from "@/api/transaction";
+import { Text } from "@react-navigation/elements";
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { Alert, StyleSheet, TextInput, View } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 type myAmount = {
   amount: 0;
 };
 const WithdrawScreen = () => {
-  const [amount, setAmount] = useState<number>();
+  const [amount, setAmount] = useState<number>(0);
   const { mutate, isPending } = useMutation({
     mutationKey: ["withdraw"],
     mutationFn: withdrawFunds,
@@ -20,8 +27,9 @@ const WithdrawScreen = () => {
   });
   const handleWithdraw = (amount: number) => {
     if (!amount || amount <= 0) {
-      Alert.alert("ERROR", "enter valid amount");
-      return;
+      return Alert.alert("ERROR", "enter valid amount");
+    } else {
+      return mutate(amount);
     }
   };
 
@@ -34,9 +42,9 @@ const WithdrawScreen = () => {
         placeholderTextColor={"#d4dfd8"}
         keyboardType="numeric"
       />
-      {/* <TouchableOpacity style={styles.button} onPress={handleWithdraw}>
-        <Text>{isPending ? "withdrawing ..." : "Withdraw"}</Text>
-      </TouchableOpacity> */}
+      <TouchableOpacity onPress={() => handleWithdraw(+amount)}>
+        <Text>Withdraw</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -52,7 +60,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: "#000",
   },
-  button: {},
   container: {
     flex: 1,
     backgroundColor: "#f7f7f7",

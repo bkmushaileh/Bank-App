@@ -53,30 +53,25 @@ const TransactionsScreen = () => {
     }
 
     return (
-      <View>
-        <TouchableOpacity onPress={handleWithdraw}>
-          {/* <Text>Withdraw</Text> */}
-        </TouchableOpacity>
-        <View style={styles.card}>
-          <View style={styles.row}>
-            <Ionicons name={iconName} size={28} color={iconColor} />
-            <View style={{ flex: 1, marginLeft: 12 }}>
-              <Text
-                style={[
-                  styles.amount,
-                  isDeposit ? styles.deposit : styles.withdraw,
-                ]}
-              >
-                {isDeposit ? `+ ${item.amount} KWD` : ` ${item.amount} KWD`}
-              </Text>
-              <Text style={styles.type}>{item.type}</Text>
-            </View>
-            <Text style={styles.date}>{formattedDate}</Text>
+      <View style={styles.card}>
+        <View style={styles.row}>
+          <Ionicons name={iconName} size={28} color={iconColor} />
+          <View style={{ flex: 1, marginLeft: 12 }}>
+            <Text
+              style={[
+                styles.amount,
+                isDeposit ? styles.deposit : styles.withdraw,
+              ]}
+            >
+              {isDeposit ? `+ ${item.amount} KWD` : ` ${item.amount} KWD`}
+            </Text>
+            <Text style={styles.type}>{item.type}</Text>
           </View>
-          <View style={styles.rowBetween}>
-            <Text style={styles.account}>From: ****{item.from.slice(-4)}</Text>
-            <Text style={styles.account}>To: ****{item.to.slice(-4)}</Text>
-          </View>
+          <Text style={styles.date}>{formattedDate}</Text>
+        </View>
+        <View style={styles.rowBetween}>
+          <Text style={styles.account}>From: ****{item.from.slice(-4)}</Text>
+          <Text style={styles.account}>To: ****{item.to.slice(-4)}</Text>
         </View>
       </View>
     );
@@ -84,6 +79,9 @@ const TransactionsScreen = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={handleWithdraw}>
+        <Text>Withdraw</Text>
+      </TouchableOpacity>
       {isSuccess && (
         <FlatList
           data={data}

@@ -1,6 +1,6 @@
 import { getUsers } from "@/api/user";
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -18,30 +18,34 @@ type User = {
 };
 
 const UsersScreen = () => {
-  const [isError, setIsError] = useState(false);
   const { data, isFetching, isSuccess } = useQuery({
     queryKey: ["profile"],
     queryFn: getUsers,
   });
   if (isFetching) return <ActivityIndicator color={"green"} />;
-  const checkImage = () => {};
-  const renderItem = ({ item }: { item: User }) => (
-    <View style={styles.card}>
-      <Image
-        source={
-          isError || !item.image
-            ? require("@/assets/images/profile.png")
-            : { uri: item.image }
-        }
-        style={styles.avatar}
-        onError={() => setIsError(true)}
-      />
-      <View style={{ marginLeft: 16 }}>
-        <Text style={styles.username}>{item.username}</Text>
-        <Text style={styles.balance}>{item.balance.toLocaleString()} KWD</Text>
+
+  const renderItem = ({ item }: { item: User }) => {
+    const imageUrlRegex = /^https/i;
+
+    return (
+      <View style={styles.card}>
+        <Image
+          source={
+            imageUrlRegex.test(item.image)
+              ? { uri: item.image }
+              : require("@/assets/images/profile.png")
+          }
+          style={styles.avatar}
+        />
+        <View style={{ marginLeft: 16 }}>
+          <Text style={styles.username}>{item.username}</Text>
+          <Text style={styles.balance}>
+            {item.balance.toLocaleString()} KWD
+          </Text>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <View style={styles.container}>
