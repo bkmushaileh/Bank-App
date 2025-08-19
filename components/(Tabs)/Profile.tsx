@@ -42,9 +42,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   userText: {
-    fontSize: 20,
+    fontSize: 19,
     fontWeight: "bold",
-    color: "#44b464",
+    color: "#838584",
   },
   balanceText: {
     marginTop: 8,
@@ -52,9 +52,9 @@ const styles = StyleSheet.create({
     fontWeight: "medium",
   },
   positive: {
-    color: "green",
+    color: "#2ecc71",
   },
   negative: {
-    color: "red",
+    color: "e74c3c",
   },
 });
