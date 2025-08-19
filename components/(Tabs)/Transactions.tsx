@@ -22,7 +22,7 @@ type Transaction = {
 };
 
 const TransactionsScreen = () => {
-  const { data, isLoading, isSuccess } = useQuery<Transaction[]>({
+  const { data, isFetching, isSuccess } = useQuery<Transaction[]>({
     queryKey: ["transactions"],
     queryFn: getTransaction,
   });
@@ -31,7 +31,7 @@ const TransactionsScreen = () => {
     router.push("/(transactions)/withdraw");
   };
 
-  if (isLoading) return <ActivityIndicator color="green" />;
+  if (isFetching) return <ActivityIndicator color="green" />;
 
   const renderItem = ({ item }: { item: Transaction }) => {
     const isDeposit = item.amount > 0;

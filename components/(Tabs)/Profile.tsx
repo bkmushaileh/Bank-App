@@ -1,25 +1,48 @@
 import { getProfile } from "@/api/auth";
 import { useQuery } from "@tanstack/react-query";
+import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
+
 const ProfileScreen = () => {
   const { data, isFetching } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
   });
+
   if (isFetching) return <ActivityIndicator color={"green"} />;
+
   return (
     <View style={styles.container}>
-      <Image source={{ uri: data.image }} style={styles.avatar} />
-      <Text style={styles.userText}>Username: {data.username}</Text>
-      <Text
-        style={[
-          styles.balanceText,
-          data.balance < 0 ? styles.negative : styles.positive,
-        ]}
+      <LinearGradient
+        colors={["#3cb662", "#2ecc71"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.card}
       >
-        Balance: {data.balance} KD
-      </Text>
+        <View style={styles.cardHeader}>
+          <Text style={styles.bankName}>Banki🫀</Text>
+          <Image source={{ uri: data.image }} style={styles.avatar} />
+        </View>
+
+        <View style={styles.cardBody}>
+          <Text style={styles.username}>{data.username}</Text>
+          <Text style={styles.balanceLabel}>Balance</Text>
+          <Text
+            style={[
+              styles.balance,
+              data.balance < 0 ? styles.negative : styles.positive,
+            ]}
+          >
+            {data.balance} KD
+          </Text>
+        </View>
+
+        <View style={styles.cardFooter}>
+          <Text style={styles.cardNumber}>**** **** **** 1234</Text>
+          <Text style={styles.validThru}>Valid Thru 12/28</Text>
+        </View>
+      </LinearGradient>
     </View>
   );
 };
@@ -32,29 +55,72 @@ const styles = StyleSheet.create({
     backgroundColor: "#f7f7f7",
     alignItems: "center",
     justifyContent: "center",
+    padding: 20,
+  },
+
+  card: {
+    width: "100%",
+    height: 250,
+    borderRadius: 20,
+    padding: 20,
+    justifyContent: "space-between",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 12,
+  },
+  cardHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  bankName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
   },
   avatar: {
-    width: 200,
-    height: 200,
-    borderRadius: "100%",
-    borderWidth: 3,
-    borderColor: "#44b464",
-    marginBottom: 15,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: "#fff",
   },
-  userText: {
-    fontSize: 19,
+  cardBody: {
+    marginTop: 10,
+  },
+  username: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#fff",
+  },
+  balanceLabel: {
+    fontSize: 14,
+    color: "#eee",
+    marginTop: 5,
+  },
+  balance: {
+    fontSize: 26,
     fontWeight: "bold",
-    color: "#838584",
-  },
-  balanceText: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "medium",
+    color: "#fff",
   },
   positive: {
-    color: "#2ecc71",
+    color: "#fff",
   },
   negative: {
-    color: "e74c3c",
+    color: "#ffb3b3",
+  },
+  cardFooter: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  cardNumber: {
+    fontSize: 16,
+    letterSpacing: 2,
+    color: "#fff",
+  },
+  validThru: {
+    fontSize: 14,
+    color: "#eee",
   },
 });

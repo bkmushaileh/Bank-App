@@ -21,6 +21,7 @@ const UsersScreen = () => {
   const { data, isFetching, isSuccess } = useQuery({
     queryKey: ["profile"],
     queryFn: getUsers,
+    staleTime: 5 * 60 * 1000,
   });
   if (isFetching) return <ActivityIndicator color={"green"} />;
 

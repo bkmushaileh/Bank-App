@@ -28,9 +28,9 @@ const WithdrawScreen = () => {
   const handleWithdraw = (amount: number) => {
     if (!amount || amount <= 0) {
       return Alert.alert("ERROR", "enter valid amount");
-    } else {
-      return mutate(amount);
-    }
+    } 
+     mutate(amount);
+    
   };
 
   return (
