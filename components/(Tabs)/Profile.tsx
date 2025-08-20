@@ -20,10 +20,14 @@ const ProfileScreen = () => {
   console.log("mydata", data);
   if (isFetching) return <ActivityIndicator color={"green"} />;
 
-  const handleWithdraw = (balance: number) => {
+  const handleWithdraw = () => {
     router.push({
       pathname: "/(transactions)/withdraw",
-      params: { balance: balance },
+    });
+  };
+  const handleDeposit = () => {
+    router.push({
+      pathname: "/(transactions)/deposit",
     });
   };
   return (
@@ -60,11 +64,15 @@ const ProfileScreen = () => {
       <View style={styles.actionRow}>
         <TouchableOpacity
           style={[styles.actionButton, { backgroundColor: "#e74c3c" }]}
-          onPress={() => {
-            handleWithdraw(data.amount);
-          }}
+          onPress={() => handleWithdraw()}
         >
           <Text style={styles.actionText}>Withdraw</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.actionButton, { backgroundColor: "green" }]}
+          onPress={() => handleDeposit()}
+        >
+          <Text style={styles.actionText}>Deposit</Text>
         </TouchableOpacity>
       </View>
     </View>

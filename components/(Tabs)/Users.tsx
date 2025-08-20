@@ -19,7 +19,7 @@ type User = {
 
 const UsersScreen = () => {
   const { data, isFetching, isSuccess } = useQuery({
-    queryKey: ["profile"],
+    queryKey: ["users"],
     queryFn: getUsers,
     staleTime: 5 * 60 * 1000,
   });

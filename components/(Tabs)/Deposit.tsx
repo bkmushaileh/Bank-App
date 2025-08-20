@@ -1,5 +1,5 @@
 import { getProfile } from "@/api/auth";
-import { withdrawFunds } from "@/api/transaction";
+import { depositFunds } from "@/api/transaction";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import {
@@ -11,11 +11,7 @@ import {
   View,
 } from "react-native";
 
-type WithdrawProps = {
-  balance: number;
-};
-
-const WithdrawScreen = () => {
+const DepositScreen = () => {
   const [amount, setAmount] = useState<number>(0);
   const { data } = useQuery({
     queryKey: ["profile"],
@@ -23,10 +19,10 @@ const WithdrawScreen = () => {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["withdraw"],
-    mutationFn: withdrawFunds,
+    mutationKey: ["deposit"],
+    mutationFn: depositFunds,
     onSuccess: () => {
-      Alert.alert("Success", "Withdrawal successful");
+      Alert.alert("Success", "Deposit successful");
       setAmount(0);
     },
     onError: () => {
@@ -34,12 +30,9 @@ const WithdrawScreen = () => {
     },
   });
 
-  const handleWithdraw = (amount: number) => {
+  const handleDeposit = (amount: number) => {
     if (!amount || amount <= 0) {
       return Alert.alert("Error", "Please enter a valid amount");
-    }
-    if (amount > data.balance) {
-      return Alert.alert("Error", "Insufficient balance");
     }
 
     mutate(amount);
@@ -47,7 +40,7 @@ const WithdrawScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Withdraw Funds</Text>
+      <Text style={styles.title}>Deposit Funds</Text>
 
       <Text style={styles.label}>Available Balance: {data.balance} KWD</Text>
 
@@ -62,18 +55,18 @@ const WithdrawScreen = () => {
 
       <TouchableOpacity
         style={[styles.button, isPending && styles.buttonDisabled]}
-        onPress={() => handleWithdraw(amount)}
+        onPress={() => handleDeposit(amount)}
         disabled={isPending}
       >
         <Text style={styles.buttonText}>
-          {isPending ? "Processing..." : "Withdraw"}
+          {isPending ? "Processing..." : "Deposit"}
         </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default WithdrawScreen;
+export default DepositScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -106,7 +99,7 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   button: {
-    backgroundColor: "#e74c3c",
+    backgroundColor: "green",
     paddingVertical: 15,
     borderRadius: 12,
     alignItems: "center",

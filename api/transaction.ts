@@ -9,5 +9,8 @@ const withdrawFunds = async (amount: number) => {
   const res = await instance.put("/transactions/withdraw", { amount });
   return res.data;
 };
-
-export { getTransaction, withdrawFunds };
+const depositFunds = async (amount: number) => {
+  const res = await instance.put("/transactions/deposit", { amount });
+  return res.data;
+};
+export { depositFunds, getTransaction, withdrawFunds };
