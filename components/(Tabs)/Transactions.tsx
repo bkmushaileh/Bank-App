@@ -1,7 +1,7 @@
 import { getTransaction } from "@/api/transaction";
 import Ionicons from "@expo/vector-icons/Ionicons"; // icons from Expo
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -9,6 +9,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { SearchBar } from "react-native-elements";
 
 type Transaction = {
   _id: string;
@@ -20,12 +21,17 @@ type Transaction = {
 };
 
 const TransactionsScreen = () => {
+  const [searchBar, setSearchBar] = useState("");
+
   const { data, isFetching, isSuccess } = useQuery<Transaction[]>({
     queryKey: ["transactions"],
     queryFn: getTransaction,
   });
 
   if (isFetching) return <ActivityIndicator color="green" size="large" />;
+  const filteredData = data?.filter((item) =>
+    item.type.toLowerCase().includes(searchBar.toLowerCase())
+  );
 
   const renderItem = ({ item }: { item: Transaction }) => {
     const isDeposit = item.type.toLowerCase() === "deposit";
@@ -76,9 +82,19 @@ const TransactionsScreen = () => {
 
   return (
     <View style={styles.container}>
+      <SearchBar
+        // placeholder="Type here..."
+        onChangeText={setSearchBar}
+        value={searchBar}
+        lightTheme
+        round
+        containerStyle={styles.searchContainer}
+        inputContainerStyle={styles.inputContainer}
+      />
+
       {isSuccess && (
         <FlatList
-          data={data}
+          data={filteredData}
           keyExtractor={(item) => item._id}
           renderItem={renderItem}
           contentContainerStyle={{ paddingBottom: 20 }}
@@ -145,6 +161,14 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 12,
     color: "#95a5a6",
+  },
+  searchContainer: {
+    backgroundColor: "transparent",
+    borderBottomColor: "transparent",
+    borderTopColor: "transparent",
+  },
+  inputContainer: {
+    backgroundColor: "#e0e0e0",
   },
 });
 
