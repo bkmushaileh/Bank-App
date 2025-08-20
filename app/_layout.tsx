@@ -23,14 +23,31 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
-        <Stack screenOptions={{ headerTintColor: "#44b464" }}>
-          <Stack.Screen name="landingPage" options={{ title: "landing" }} />
+        <Stack screenOptions={{ headerTintColor: "green" }}>
+          <Stack.Screen name="landingPage" options={{ headerShown: false }} />
           <Stack.Screen
             name="auth/login"
             options={{
               title: "Login",
               headerBackTitle: "Main",
+              headerShown: false,
             }}
+          />
+          <Stack.Screen
+            name="(transactions)/withdraw"
+            options={{ title: "Withdraw", headerBackTitle: "Profile" }}
+          />
+          <Stack.Screen
+            name="(transactions)/deposit"
+            options={{ title: "Deposit", headerBackTitle: "Profile" }}
+          />
+          <Stack.Screen
+            name="(transactions)/transfer"
+            options={{ title: "Transfer", headerBackTitle: "Users" }}
+          />
+          <Stack.Screen
+            name="(transactions)"
+            options={{ headerShown: false }}
           />
 
           <Stack.Screen
@@ -38,6 +55,7 @@ export default function RootLayout() {
             options={{
               title: "Register",
               headerBackTitle: "Main",
+              headerShown: false,
             }}
           />
           <Stack.Protected guard={isAuthenticated}>

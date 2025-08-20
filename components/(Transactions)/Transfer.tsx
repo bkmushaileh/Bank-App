@@ -1,6 +1,6 @@
 import { getProfile } from "@/api/auth";
 import { transferAmount } from "@/api/transaction";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import {
@@ -13,14 +13,20 @@ import {
 } from "react-native";
 
 const TransferScreen = () => {
+  const queryClient = useQueryClient();
+
   const [amount, setAmount] = useState<number>();
   const { username } = useLocalSearchParams();
   const receiverUsername = Array.isArray(username) ? username[0] : username;
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["transfer"],
     mutationFn: transferAmount,
     onSuccess: () => {
-      console.log("transerf successfully");
+      setAmount(0);
+      Alert.alert("Transfer done successfully");
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     },
     onError: (error) => {
       console.log("My EROR", error);
@@ -43,14 +49,19 @@ const TransferScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Transfer to ${username}</Text>
+      <Text style={styles.title}>Transfer Funds</Text>
+      <Text style={styles.label}>Transfer to: {username}</Text>
       <TextInput
         style={styles.input}
-        keyboardType="numeric"
+        keyboardType="decimal-pad"
         placeholder="Enter amount to transfer"
         onChangeText={(text) => setAmount(+text)}
+        value={amount ? amount.toString() : ""}
       />
-      <TouchableOpacity style={styles.button} onPress={() => handleTransfer()}>
+      <TouchableOpacity
+        style={[styles.button, isPending && styles.buttonDisabled]}
+        onPress={() => handleTransfer()}
+      >
         <Text style={styles.buttonText}>Transfer</Text>
       </TouchableOpacity>
     </View>
@@ -69,7 +80,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "700",
-    color: "#2ecc71",
+    color: "green",
     marginBottom: 20,
     textAlign: "center",
   },

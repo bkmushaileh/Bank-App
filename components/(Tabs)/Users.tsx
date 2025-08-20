@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 35,
     borderWidth: 2,
-    borderColor: "#44b464",
+    borderColor: "green",
   },
   username: {
     fontSize: 16,
@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   transferButton: {
-    backgroundColor: "#44b464",
-    paddingVertical: 6,
+    backgroundColor: "green",
+    paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 8,
     marginLeft: 20,

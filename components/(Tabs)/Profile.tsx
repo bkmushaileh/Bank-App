@@ -33,7 +33,7 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["#3cb662", "#2ecc71"]}
+        colors={["green", "#2ecc71"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.card}

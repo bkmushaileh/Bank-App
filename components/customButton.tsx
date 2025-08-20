@@ -22,7 +22,7 @@ const CustomButton = (props: customText) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#44b464",
+    backgroundColor: "green",
     padding: 15,
     borderRadius: 15,
     alignItems: "center",

@@ -1,16 +1,27 @@
+import { deleteToken } from "@/api/storage";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Octicons from "@expo/vector-icons/Octicons";
-import { Tabs } from "expo-router";
-import React from "react";
+import { router, Tabs } from "expo-router";
+import React, { useContext } from "react";
+import { TouchableOpacity } from "react-native";
+import AuthContext from "../context/AuthContext";
 
 const _layout = () => {
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+
+  const handleLogOut = async () => {
+    await deleteToken();
+    setIsAuthenticated(false);
+    router.dismissTo("/landingPage");
+  };
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#44b464",
+        tabBarActiveTintColor: "green",
         animation: "shift",
-        headerTintColor: "#44b464",
+        headerTintColor: "green",
       }}
     >
       <Tabs.Screen
@@ -19,6 +30,11 @@ const _layout = () => {
           title: "Home",
           tabBarIcon: ({ color }) => (
             <Octicons name="home" size={20} color={color} />
+          ),
+          headerRight: () => (
+            <TouchableOpacity onPress={handleLogOut}>
+              <MaterialIcons name="logout" size={20} color={"green"} />
+            </TouchableOpacity>
           ),
         }}
       />
@@ -56,3 +72,6 @@ const _layout = () => {
 };
 
 export default _layout;
+function setIsAuthenticated(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}

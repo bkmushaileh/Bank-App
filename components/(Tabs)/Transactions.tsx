@@ -27,7 +27,7 @@ const TransactionsScreen = () => {
     queryFn: getTransaction,
   });
 
-  if (isFetching) return <ActivityIndicator color="green" size="large" />;
+  if (isFetching) return <ActivityIndicator color="green" />;
   const filteredData = data?.filter((item) =>
     item.type.toLowerCase().includes(searchBar.toLowerCase())
   );
@@ -46,10 +46,13 @@ const TransactionsScreen = () => {
 
     if (isDeposit) {
       iconName = "arrow-down-circle";
-      iconColor = "#2ecc71";
+      iconColor = "green";
     } else if (item.type.toLowerCase() === "withdraw") {
       iconName = "arrow-up-circle";
       iconColor = "#e74c3c";
+    } else if (item.type.toLowerCase() === "transfer") {
+      iconName = "swap-horizontal";
+      iconColor = "green";
     }
 
     return (
@@ -60,7 +63,11 @@ const TransactionsScreen = () => {
             <Text
               style={[
                 styles.amount,
-                isDeposit ? styles.deposit : styles.withdraw,
+                isDeposit
+                  ? styles.deposit
+                  : item.type.toLowerCase() === "transfer"
+                  ? styles.deposit
+                  : styles.withdraw,
               ]}
             >
               {` ${item.amount} KWD`}
@@ -134,7 +141,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   deposit: {
-    color: "#2ecc71",
+    color: "green",
   },
   withdraw: {
     color: "#e74c3c",

@@ -1,6 +1,6 @@
 import { getProfile } from "@/api/auth";
 import { withdrawFunds } from "@/api/transaction";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import {
   Alert,
@@ -12,6 +12,8 @@ import {
 } from "react-native";
 
 const WithdrawScreen = () => {
+  const queryClient = useQueryClient();
+
   const [amount, setAmount] = useState<number>(0);
   const { data } = useQuery({
     queryKey: ["profile"],
@@ -24,6 +26,8 @@ const WithdrawScreen = () => {
     onSuccess: () => {
       Alert.alert("Success", "Withdrawal successful");
       setAmount(0);
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
     },
     onError: (Error) => {
       console.log(Error);
@@ -54,7 +58,7 @@ const WithdrawScreen = () => {
         placeholder="Enter amount to withdraw"
         style={styles.input}
         placeholderTextColor="#aaa"
-        keyboardType="numeric"
+        keyboardType="decimal-pad"
       />
 
       <TouchableOpacity
@@ -82,7 +86,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "700",
-    color: "#2ecc71",
+    color: "#e74c3c",
     marginBottom: 20,
     textAlign: "center",
   },

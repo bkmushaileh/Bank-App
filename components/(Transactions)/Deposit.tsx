@@ -1,6 +1,6 @@
 import { getProfile } from "@/api/auth";
 import { depositFunds } from "@/api/transaction";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import {
   Alert,
@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 const DepositScreen = () => {
+  const queryClient = useQueryClient();
   const [amount, setAmount] = useState<number>(0);
   const { data } = useQuery({
     queryKey: ["profile"],
@@ -24,6 +25,8 @@ const DepositScreen = () => {
     onSuccess: () => {
       Alert.alert("Success", "Deposit successful");
       setAmount(0);
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
     },
     onError: () => {
       Alert.alert("Error", "Something went wrong. Please try again");
@@ -50,7 +53,7 @@ const DepositScreen = () => {
         placeholder="Enter amount to withdraw"
         style={styles.input}
         placeholderTextColor="#aaa"
-        keyboardType="numeric"
+        keyboardType="decimal-pad"
       />
 
       <TouchableOpacity
@@ -78,7 +81,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "700",
-    color: "#2ecc71",
+    color: "green",
     marginBottom: 20,
     textAlign: "center",
   },
