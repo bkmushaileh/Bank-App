@@ -1,14 +1,12 @@
 import { getTransaction } from "@/api/transaction";
 import Ionicons from "@expo/vector-icons/Ionicons"; // icons from Expo
 import { useQuery } from "@tanstack/react-query";
-import { router } from "expo-router";
 import React from "react";
 import {
   ActivityIndicator,
   FlatList,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -27,14 +25,11 @@ const TransactionsScreen = () => {
     queryFn: getTransaction,
   });
 
-  const handleWithdraw = () => {
-    router.push("/(transactions)/withdraw");
-  };
-
-  if (isFetching) return <ActivityIndicator color="green" />;
+  if (isFetching) return <ActivityIndicator color="green" size="large" />;
 
   const renderItem = ({ item }: { item: Transaction }) => {
-    const isDeposit = item.amount > 0;
+    const isDeposit = item.type.toLowerCase() === "deposit";
+
     const formattedDate = new Date(item.createdAt).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -44,10 +39,10 @@ const TransactionsScreen = () => {
     let iconName: keyof typeof Ionicons.glyphMap = "repeat";
     let iconColor = "#3498db";
 
-    if (item.type.toLowerCase() === "deposit") {
+    if (isDeposit) {
       iconName = "arrow-down-circle";
       iconColor = "#2ecc71";
-    } else if (item.amount < 0 || item.type.toLowerCase() === "withdraw") {
+    } else if (item.type.toLowerCase() === "withdraw") {
       iconName = "arrow-up-circle";
       iconColor = "#e74c3c";
     }
@@ -55,21 +50,23 @@ const TransactionsScreen = () => {
     return (
       <View style={styles.card}>
         <View style={styles.row}>
-          <Ionicons name={iconName} size={28} color={iconColor} />
-          <View style={{ flex: 1, marginLeft: 12 }}>
+          <Ionicons name={iconName} size={32} color={iconColor} />
+          <View style={{ flex: 1, marginLeft: 16 }}>
             <Text
               style={[
                 styles.amount,
                 isDeposit ? styles.deposit : styles.withdraw,
               ]}
             >
-              {isDeposit ? `+ ${item.amount} KWD` : ` ${item.amount} KWD`}
+              {` ${item.amount} KWD`}
             </Text>
-            <Text style={styles.type}>{item.type}</Text>
+            <View style={styles.typeContainer}>
+              <Text style={styles.type}>{item.type}</Text>
+            </View>
           </View>
           <Text style={styles.date}>{formattedDate}</Text>
         </View>
-        <View style={styles.rowBetween}>
+        <View style={[styles.rowBetween, { marginTop: 12 }]}>
           <Text style={styles.account}>From: ****{item.from.slice(-4)}</Text>
           <Text style={styles.account}>To: ****{item.to.slice(-4)}</Text>
         </View>
@@ -79,9 +76,6 @@ const TransactionsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleWithdraw}>
-        <Text>Withdraw</Text>
-      </TouchableOpacity>
       {isSuccess && (
         <FlatList
           data={data}
@@ -97,33 +91,32 @@ const TransactionsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f7f7f7",
+    backgroundColor: "#f2f3f7",
     padding: 16,
   },
   card: {
     backgroundColor: "#fff",
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 7,
     shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
+    shadowOpacity: 0.08,
+    shadowRadius: 2,
     shadowOffset: { width: 0, height: 2 },
-    elevation: 8,
+    elevation: 1,
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 8,
   },
   rowBetween: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   amount: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 20,
+    fontWeight: "700",
   },
   deposit: {
     color: "#2ecc71",
@@ -131,17 +124,26 @@ const styles = StyleSheet.create({
   withdraw: {
     color: "#e74c3c",
   },
+  typeContainer: {
+    marginTop: 4,
+    backgroundColor: "#e0e5ec",
+    alignSelf: "flex-start",
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 10,
+  },
   type: {
-    fontSize: 14,
+    fontSize: 12,
     color: "#7f8c8d",
     textTransform: "capitalize",
+    fontWeight: "500",
   },
   account: {
     fontSize: 13,
     color: "#95a5a6",
   },
   date: {
-    fontSize: 13,
+    fontSize: 12,
     color: "#95a5a6",
   },
 });

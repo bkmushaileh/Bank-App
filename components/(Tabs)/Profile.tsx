@@ -1,17 +1,31 @@
 import { getProfile } from "@/api/auth";
 import { useQuery } from "@tanstack/react-query";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import React from "react";
-import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const ProfileScreen = () => {
   const { data, isFetching } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
   });
-
+  console.log("mydata", data);
   if (isFetching) return <ActivityIndicator color={"green"} />;
 
+  const handleWithdraw = (balance: number) => {
+    router.push({
+      pathname: "/(transactions)/withdraw",
+      params: { balance: balance },
+    });
+  };
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -43,6 +57,16 @@ const ProfileScreen = () => {
           <Text style={styles.validThru}>Valid Thru 12/28</Text>
         </View>
       </LinearGradient>
+      <View style={styles.actionRow}>
+        <TouchableOpacity
+          style={[styles.actionButton, { backgroundColor: "#e74c3c" }]}
+          onPress={() => {
+            handleWithdraw(data.amount);
+          }}
+        >
+          <Text style={styles.actionText}>Withdraw</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -122,5 +146,22 @@ const styles = StyleSheet.create({
   validThru: {
     fontSize: 14,
     color: "#eee",
+  },
+  actionRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 30,
+  },
+  actionButton: {
+    flex: 1,
+    paddingVertical: 15,
+    borderRadius: 12,
+    alignItems: "center",
+    marginHorizontal: 5,
+  },
+  actionText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });

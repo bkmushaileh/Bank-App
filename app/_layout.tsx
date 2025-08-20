@@ -32,6 +32,7 @@ export default function RootLayout() {
               headerBackTitle: "Main",
             }}
           />
+
           <Stack.Screen
             name="auth/register"
             options={{

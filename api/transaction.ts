@@ -6,7 +6,7 @@ const getTransaction = async () => {
 };
 
 const withdrawFunds = async (amount: number) => {
-  const res = await instance.put("/transactions/withdraw", amount);
+  const res = await instance.put("/transactions/withdraw", { amount });
   return res.data;
 };
 

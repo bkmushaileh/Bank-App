@@ -1,49 +1,68 @@
 import { withdrawFunds } from "@/api/transaction";
-import { Text } from "@react-navigation/elements";
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import {
   Alert,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 
-type myAmount = {
-  amount: 0;
+type WithdrawProps = {
+  balance: number;
 };
-const WithdrawScreen = () => {
+
+const WithdrawScreen = ({ balance }: WithdrawProps) => {
   const [amount, setAmount] = useState<number>(0);
+
   const { mutate, isPending } = useMutation({
     mutationKey: ["withdraw"],
     mutationFn: withdrawFunds,
-    onSuccess: (data) => {
-      Alert.alert("withdraw successful");
+    onSuccess: () => {
+      Alert.alert("Success", "Withdrawal successful");
+      setAmount(0);
     },
-    onError: (erro: any) => {
-      Alert.alert("ERROR", erro);
+    onError: () => {
+      Alert.alert("Error", "Something went wrong. Please try again");
     },
   });
+
   const handleWithdraw = (amount: number) => {
     if (!amount || amount <= 0) {
-      return Alert.alert("ERROR", "enter valid amount");
-    } 
-     mutate(amount);
-    
+      return Alert.alert("Error", "Please enter a valid amount");
+    }
+    if (amount > balance) {
+      return Alert.alert("Error", "Insufficient balance");
+    }
+
+    mutate(amount);
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Withdraw Funds</Text>
+
+      <Text style={styles.label}>Available Balance: {balance} KWD</Text>
+
       <TextInput
+        value={amount ? amount.toString() : ""}
         onChangeText={(text) => setAmount(+text)}
-        placeholder="Please enter your your withdraw amount.."
-        style={styles.num}
-        placeholderTextColor={"#d4dfd8"}
+        placeholder="Enter amount to withdraw"
+        style={styles.input}
+        placeholderTextColor="#aaa"
         keyboardType="numeric"
       />
-      <TouchableOpacity onPress={() => handleWithdraw(+amount)}>
-        <Text>Withdraw</Text>
+
+      <TouchableOpacity
+        style={[styles.button, isPending && styles.buttonDisabled]}
+        onPress={() => handleWithdraw(amount)}
+        disabled={isPending}
+      >
+        <Text style={styles.buttonText}>
+          {isPending ? "Processing..." : "Withdraw"}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -52,17 +71,47 @@ const WithdrawScreen = () => {
 export default WithdrawScreen;
 
 const styles = StyleSheet.create({
-  num: {
+  container: {
+    flex: 1,
+    backgroundColor: "#f2f3f7",
+    padding: 20,
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "700",
+    color: "#2ecc71",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  label: {
+    fontSize: 16,
+    color: "#555",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  input: {
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 12,
+    backgroundColor: "#fff",
+    fontSize: 16,
     marginBottom: 20,
     color: "#000",
   },
-  container: {
-    flex: 1,
-    backgroundColor: "#f7f7f7",
-    padding: 16,
+  button: {
+    backgroundColor: "#e74c3c",
+    paddingVertical: 15,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  buttonDisabled: {
+    backgroundColor: "#95d6a3",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "600",
+    fontSize: 18,
   },
 });
