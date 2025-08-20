@@ -13,8 +13,16 @@ const depositFunds = async (amount: number) => {
   const res = await instance.put("/transactions/deposit", { amount });
   return res.data;
 };
-const transferAmount = async (user: string) => {
-  const res = await instance.put(`/transactions/transfer/${user}}`);
+const transferAmount = async ({
+  username,
+  amount,
+}: {
+  username: string;
+  amount: number;
+}) => {
+  const res = await instance.put(`/transactions/transfer/${username}`, {
+    amount,
+  });
   return res.data;
 };
-export { depositFunds, getTransaction, withdrawFunds };
+export { depositFunds, getTransaction, transferAmount, withdrawFunds };

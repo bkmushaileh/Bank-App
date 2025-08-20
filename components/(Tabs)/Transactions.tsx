@@ -9,7 +9,6 @@ import {
   Text,
   View,
 } from "react-native";
-import { SearchBar } from "react-native-elements";
 
 type Transaction = {
   _id: string;
@@ -82,15 +81,15 @@ const TransactionsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <SearchBar
+      {/* <SearchBar
         // placeholder="Type here..."
-        onChangeText={setSearchBar}
+        // onChangeText={setSearchBar}
         value={searchBar}
         lightTheme
         round
         containerStyle={styles.searchContainer}
         inputContainerStyle={styles.inputContainer}
-      />
+      /> */}
 
       {isSuccess && (
         <FlatList

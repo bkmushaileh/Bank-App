@@ -1,4 +1,4 @@
-import WithdrawScreen from "@/components/(Tabs)/Withdraw";
+import WithdrawScreen from "@/components/(Transactions)/Withdraw";
 import React from "react";
 
 const withdraw = () => {

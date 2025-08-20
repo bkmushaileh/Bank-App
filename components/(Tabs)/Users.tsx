@@ -1,5 +1,6 @@
 import { getUsers } from "@/api/user";
 import { useQuery } from "@tanstack/react-query";
+import { router } from "expo-router";
 import React from "react";
 import {
   ActivityIndicator,
@@ -7,6 +8,7 @@ import {
   Image,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -25,6 +27,13 @@ const UsersScreen = () => {
   });
   if (isFetching) return <ActivityIndicator color={"green"} />;
 
+  const handleTransfer = (username: string) => {
+    router.push({
+      pathname: "/(transactions)/transfer",
+      params: { username },
+    });
+  };
+
   const renderItem = ({ item }: { item: User }) => {
     const imageUrlRegex = /^https/i;
 
@@ -38,12 +47,20 @@ const UsersScreen = () => {
           }
           style={styles.avatar}
         />
-        <View style={{ marginLeft: 16 }}>
+        <View style={{ flex: 1, marginLeft: 16 }}>
           <Text style={styles.username}>{item.username}</Text>
           <Text style={styles.balance}>
             {item.balance.toLocaleString()} KWD
           </Text>
         </View>
+        <TouchableOpacity
+          style={styles.transferButton}
+          onPress={() => {
+            handleTransfer(item.username);
+          }}
+        >
+          <Text style={styles.transferText}>Transfer</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -99,5 +116,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#7f8c8d",
     marginTop: 4,
+  },
+  transferButton: {
+    backgroundColor: "#44b464",
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginLeft: 20,
+  },
+  transferText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
   },
 });

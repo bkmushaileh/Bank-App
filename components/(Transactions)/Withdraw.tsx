@@ -11,10 +11,6 @@ import {
   View,
 } from "react-native";
 
-type WithdrawProps = {
-  balance: number;
-};
-
 const WithdrawScreen = () => {
   const [amount, setAmount] = useState<number>(0);
   const { data } = useQuery({
@@ -29,12 +25,13 @@ const WithdrawScreen = () => {
       Alert.alert("Success", "Withdrawal successful");
       setAmount(0);
     },
-    onError: () => {
+    onError: (Error) => {
+      console.log(Error);
       Alert.alert("Error", "Something went wrong. Please try again");
     },
   });
 
-  const handleWithdraw = (amount: number) => {
+  const handleWithdraw = () => {
     if (!amount || amount <= 0) {
       return Alert.alert("Error", "Please enter a valid amount");
     }
@@ -62,7 +59,7 @@ const WithdrawScreen = () => {
 
       <TouchableOpacity
         style={[styles.button, isPending && styles.buttonDisabled]}
-        onPress={() => handleWithdraw(amount)}
+        onPress={() => handleWithdraw()}
         disabled={isPending}
       >
         <Text style={styles.buttonText}>

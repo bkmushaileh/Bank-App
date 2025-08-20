@@ -1,4 +1,4 @@
-import DepositScreen from "@/components/(Tabs)/Deposit";
+import DepositScreen from "@/components/(Transactions)/Deposit";
 import React from "react";
 
 const deposit = () => {
