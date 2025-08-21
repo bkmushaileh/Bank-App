@@ -106,19 +106,12 @@ const TransactionsScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* <SearchBar
-        placeholder="type here .."
-        value={searchBar}
-        onChangeText={(text) => setSearchBar(text)}
-        lightTheme
-        round
-        containerStyle={styles.searchContainer}
-        inputContainerStyle={styles.inputContainer}
-      /> */}
+      {/*  */}
       <TextInput
         placeholder="Search by amount"
         value={amountSearch}
         onChangeText={setAmountSearch}
+        keyboardType="numeric"
         style={{
           backgroundColor: "#e0e0e0",
           padding: 8,
