@@ -1,14 +1,18 @@
 import { getTransaction } from "@/api/transaction";
 import Ionicons from "@expo/vector-icons/Ionicons"; // icons from Expo
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
+  Button,
   FlatList,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
+import { SearchBar } from "react-native-elements";
 
 type Transaction = {
   _id: string;
@@ -21,6 +25,11 @@ type Transaction = {
 
 const TransactionsScreen = () => {
   const [searchBar, setSearchBar] = useState("");
+  const [amountSearch, setAmountSearch] = useState("");
+  const [dateFrom, setDateFrom] = useState<Date | null>(null);
+  const [dateTo, setDateTo] = useState<Date | null>(null);
+  const [showDateFrom, setShowDateFrom] = useState(false);
+  const [showDateTo, setShowDateTo] = useState(false);
 
   const { data, isFetching, isSuccess } = useQuery<Transaction[]>({
     queryKey: ["transactions"],
@@ -28,9 +37,19 @@ const TransactionsScreen = () => {
   });
 
   if (isFetching) return <ActivityIndicator color="green" />;
-  const filteredData = data?.filter((item) =>
-    item.type.toLowerCase().includes(searchBar.toLowerCase())
-  );
+  const filteredData = data?.filter((item) => {
+    const itemDate = new Date(item.createdAt);
+    const fromOK = !dateFrom || itemDate >= dateFrom;
+    const toOK = !dateTo || itemDate <= dateTo;
+    const amountOK = amountSearch
+      ? item.amount.toString().includes(amountSearch)
+      : true;
+    const textOK = searchBar
+      ? item.type.toLowerCase().includes(searchBar.toLowerCase())
+      : true;
+
+    return fromOK && toOK && amountOK && textOK;
+  });
 
   const renderItem = ({ item }: { item: Transaction }) => {
     const isDeposit = item.type.toLowerCase() === "deposit";
@@ -88,15 +107,59 @@ const TransactionsScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* <SearchBar
-        // placeholder="Type here..."
-        // onChangeText={setSearchBar}
+      <SearchBar
+        placeholder="search"
         value={searchBar}
+        onChangeText={(text) => setSearchBar(text)}
         lightTheme
         round
         containerStyle={styles.searchContainer}
         inputContainerStyle={styles.inputContainer}
-      /> */}
+      />
+      <TextInput
+        placeholder="Search by amount"
+        value={amountSearch}
+        onChangeText={setAmountSearch}
+        style={{
+          backgroundColor: "#e0e0e0",
+          padding: 8,
+          borderRadius: 10,
+          marginBottom: 12,
+        }}
+      />
+      <View style={{ marginBottom: 16 }}>
+        <Button title="From Date" onPress={() => setShowDateFrom(true)} />
+        {showDateFrom && (
+          <DateTimePicker
+            value={dateFrom || new Date()}
+            mode="date"
+            display="default"
+            onChange={(_event, selectedDate) => {
+              setShowDateFrom(false);
+              if (selectedDate) setDateFrom(selectedDate);
+            }}
+          />
+        )}
+        <View style={{ marginTop: 8 }}>
+          <Button title="To Date" onPress={() => setShowDateTo(true)} />
+          {showDateTo && (
+            <DateTimePicker
+              value={dateTo || new Date()}
+              mode="date"
+              display="default"
+              onChange={(_event, selectedDate) => {
+                setShowDateTo(false);
+                if (selectedDate) setDateTo(selectedDate);
+              }}
+            />
+          )}
+        </View>
+
+        <Text style={{ marginTop: 8, fontSize: 12, color: "#7f8c8d" }}>
+          {dateFrom && `From: ${dateFrom.toDateString()} `}
+          {dateTo && `To: ${dateTo.toDateString()}`}
+        </Text>
+      </View>
 
       {isSuccess && (
         <FlatList
