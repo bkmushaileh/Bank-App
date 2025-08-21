@@ -1,6 +1,7 @@
 import { getProfile } from "@/api/auth";
 import { withdrawFunds } from "@/api/transaction";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
   Alert,
@@ -28,6 +29,7 @@ const WithdrawScreen = () => {
       setAmount(0);
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      router.dismissTo("/(tabs)/profile");
     },
     onError: (Error) => {
       console.log(Error);

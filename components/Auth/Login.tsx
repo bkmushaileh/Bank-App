@@ -59,14 +59,14 @@ const LoginScreen = () => {
           onChangeText={(text) => setUserInfo({ ...userInfo, username: text })}
           placeholder="Please enter your username here.."
           style={styles.input}
-          placeholderTextColor={"#d4dfd8"}
+          placeholderTextColor="#999"
         />
 
         <TextInput
           onChangeText={(text) => setUserInfo({ ...userInfo, password: text })}
           placeholder="Please enter your password here.."
           style={styles.input}
-          placeholderTextColor={"#d4dfd8"}
+          placeholderTextColor="#999"
           secureTextEntry
         />
         <View style={styles.buttonContainer}>

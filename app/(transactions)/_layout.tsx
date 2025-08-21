@@ -5,11 +5,11 @@ const _layout = () => {
     <Stack screenOptions={{ headerTintColor: "green" }}>
       <Stack.Screen
         name="transfer"
-        options={{ title: "Transfer", headerBackTitle: "Users" }}
-      />
-      <Stack.Screen
-        name="(transactions)/transfer"
-        options={{ title: "Transfer", headerBackTitle: "Users" }}
+        options={{
+          title: "Transfer",
+          headerBackTitle: "Users",
+          headerBackVisible: true,
+        }}
       />
     </Stack>
   );

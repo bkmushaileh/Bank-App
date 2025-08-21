@@ -11,7 +11,7 @@ const CustomButton = (props: customText) => {
     <Pressable
       style={({ pressed }) => [
         styles.button,
-        { backgroundColor: pressed ? "green" : "#44b464" },
+        { backgroundColor: pressed ? "$44b464" : "green" },
       ]}
       onPress={props.onPress}
     >

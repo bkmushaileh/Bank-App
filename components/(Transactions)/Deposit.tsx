@@ -1,6 +1,7 @@
 import { getProfile } from "@/api/auth";
 import { depositFunds } from "@/api/transaction";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
   Alert,
@@ -27,6 +28,7 @@ const DepositScreen = () => {
       setAmount(0);
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      router.dismissTo("/(tabs)/profile");
     },
     onError: () => {
       Alert.alert("Error", "Something went wrong. Please try again");
