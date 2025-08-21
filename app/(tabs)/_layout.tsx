@@ -7,7 +7,6 @@ import { router, Tabs } from "expo-router";
 import React, { useContext } from "react";
 import { TouchableOpacity } from "react-native";
 import AuthContext from "../context/AuthContext";
-
 const _layout = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
@@ -16,6 +15,9 @@ const _layout = () => {
     setIsAuthenticated(false);
     router.dismissTo("/landingPage");
   };
+  // const handleNotification = async () => {
+  //   router.push("../notification");
+  // };
   return (
     <Tabs
       screenOptions={{
@@ -31,13 +33,24 @@ const _layout = () => {
           tabBarIcon: ({ color }) => (
             <Octicons name="home" size={20} color={color} />
           ),
+
           headerRight: () => (
-            <TouchableOpacity onPress={handleLogOut}>
-              <MaterialIcons name="logout" size={20} color={"green"} />
-            </TouchableOpacity>
+            <React.Fragment>
+              <TouchableOpacity
+                onPress={() => router.push("/(tabs)/notification")}
+                style={{ marginRight: 15 }}
+              >
+                <MaterialIcons name="notifications" size={24} color="green" />
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={handleLogOut}>
+                <MaterialIcons name="logout" size={20} color={"green"} />
+              </TouchableOpacity>
+            </React.Fragment>
           ),
         }}
       />
+
       <Tabs.Screen
         name="transactions"
         options={{
@@ -55,6 +68,12 @@ const _layout = () => {
           tabBarIcon: ({ color }) => (
             <FontAwesome name="users" size={20} color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="notification"
+        options={{
+          href: null,
         }}
       />
 
