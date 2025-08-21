@@ -12,7 +12,6 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { SearchBar } from "react-native-elements";
 
 type Transaction = {
   _id: string;
@@ -75,7 +74,7 @@ const TransactionsScreen = () => {
     }
 
     return (
-      <View style={styles.card}>
+      <View key={item._id} style={styles.card}>
         <View style={styles.row}>
           <Ionicons name={iconName} size={32} color={iconColor} />
           <View style={{ flex: 1, marginLeft: 16 }}>
@@ -107,15 +106,15 @@ const TransactionsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <SearchBar
-        placeholder="search"
+      {/* <SearchBar
+        placeholder="type here .."
         value={searchBar}
         onChangeText={(text) => setSearchBar(text)}
         lightTheme
         round
         containerStyle={styles.searchContainer}
         inputContainerStyle={styles.inputContainer}
-      />
+      /> */}
       <TextInput
         placeholder="Search by amount"
         value={amountSearch}
@@ -128,7 +127,11 @@ const TransactionsScreen = () => {
         }}
       />
       <View style={{ marginBottom: 16 }}>
-        <Button title="From Date" onPress={() => setShowDateFrom(true)} />
+        <Button
+          title="From Date"
+          onPress={() => setShowDateFrom(true)}
+          color="green"
+        />
         {showDateFrom && (
           <DateTimePicker
             value={dateFrom || new Date()}
@@ -141,7 +144,11 @@ const TransactionsScreen = () => {
           />
         )}
         <View style={{ marginTop: 8 }}>
-          <Button title="To Date" onPress={() => setShowDateTo(true)} />
+          <Button
+            title="To Date"
+            onPress={() => setShowDateTo(true)}
+            color="green"
+          />
           {showDateTo && (
             <DateTimePicker
               value={dateTo || new Date()}
