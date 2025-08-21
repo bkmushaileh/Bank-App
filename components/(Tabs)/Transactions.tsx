@@ -23,12 +23,12 @@ type Transaction = {
 };
 
 const TransactionsScreen = () => {
-  const [searchBar, setSearchBar] = useState("");
   const [amountSearch, setAmountSearch] = useState("");
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
   const [showDateFrom, setShowDateFrom] = useState(false);
   const [showDateTo, setShowDateTo] = useState(false);
+  const [typeFilter, setTypeFilter] = useState<string | null>(null);
 
   const { data, isFetching, isSuccess } = useQuery<Transaction[]>({
     queryKey: ["transactions"],
@@ -43,11 +43,10 @@ const TransactionsScreen = () => {
     const amountOK = amountSearch
       ? item.amount.toString().includes(amountSearch)
       : true;
-    const textOK = searchBar
-      ? item.type.toLowerCase().includes(searchBar.toLowerCase())
-      : true;
 
-    return fromOK && toOK && amountOK && textOK;
+    const typeOK = typeFilter ? item.type.toLowerCase() === typeFilter : true;
+
+    return fromOK && toOK && amountOK && typeOK;
   });
 
   const renderItem = ({ item }: { item: Transaction }) => {
@@ -159,6 +158,30 @@ const TransactionsScreen = () => {
           {dateFrom && `From: ${dateFrom.toDateString()} `}
           {dateTo && `To: ${dateTo.toDateString()}`}
         </Text>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginBottom: 12,
+        }}
+      >
+        {["All", "Deposit", "Withdraw", "Transfer"].map((type) => (
+          <Button
+            key={type}
+            title={type}
+            color={
+              typeFilter === type.toLowerCase()
+                ? type.toLowerCase() === "withdraw"
+                  ? "#e74c3c"
+                  : "green"
+                : "#95a5a6"
+            }
+            onPress={() =>
+              setTypeFilter(type === "All" ? null : type.toLowerCase())
+            }
+          />
+        ))}
       </View>
 
       {isSuccess && (
