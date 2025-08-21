@@ -33,16 +33,9 @@ export default function RootLayout() {
               headerShown: false,
             }}
           />
+
           <Stack.Screen
-            name="(transactions)/withdraw"
-            options={{ title: "Withdraw", headerBackTitle: "Profile" }}
-          />
-          <Stack.Screen
-            name="(transactions)/deposit"
-            options={{ title: "Deposit", headerBackTitle: "Profile" }}
-          />
-          <Stack.Screen
-            name="(transactions)/transfer"
+            name="components/(Tabs)/Transactions"
             options={{ title: "Transfer", headerBackTitle: "Users" }}
           />
           <Stack.Screen

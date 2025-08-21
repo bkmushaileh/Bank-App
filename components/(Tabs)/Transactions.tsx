@@ -105,39 +105,36 @@ const TransactionsScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/*  */}
       <TextInput
         placeholder="Search by amount"
+        placeholderTextColor="#999"
         value={amountSearch}
         onChangeText={setAmountSearch}
         keyboardType="numeric"
-        style={{
-          backgroundColor: "#e0e0e0",
-          padding: 8,
-          borderRadius: 10,
-          marginBottom: 12,
-        }}
+        style={styles.searchBox}
       />
-      <View style={{ marginBottom: 16 }}>
-        <Button
-          title="From Date"
-          onPress={() => setShowDateFrom(true)}
-          color="green"
-        />
-        {showDateFrom && (
-          <DateTimePicker
-            value={dateFrom || new Date()}
-            mode="date"
-            display="default"
-            onChange={(_event, selectedDate) => {
-              setShowDateFrom(false);
-              if (selectedDate) setDateFrom(selectedDate);
-            }}
-          />
-        )}
-        <View style={{ marginTop: 8 }}>
+      <View style={{ flexDirection: "row", gap: 12, marginBottom: 16 }}>
+        <View style={{ flex: 1 }}>
           <Button
-            title="To Date"
+            title="From"
+            onPress={() => setShowDateFrom(true)}
+            color="green"
+          />
+          {showDateFrom && (
+            <DateTimePicker
+              value={dateFrom || new Date()}
+              mode="date"
+              display="default"
+              onChange={(_event, selectedDate) => {
+                setShowDateFrom(false);
+                if (selectedDate) setDateFrom(selectedDate);
+              }}
+            />
+          )}
+        </View>
+        <View style={{ flex: 1 }}>
+          <Button
+            title="To"
             onPress={() => setShowDateTo(true)}
             color="green"
           />
@@ -261,6 +258,44 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     backgroundColor: "#e0e0e0",
+  },
+  searchBox: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    fontSize: 15,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 2,
+  },
+  filterRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 20,
+  },
+  datePicker: {
+    flex: 1,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    fontSize: 14,
+    textAlign: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.04,
+    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 1,
   },
 });
 

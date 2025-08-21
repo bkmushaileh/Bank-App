@@ -1,7 +1,7 @@
 import { getProfile } from "@/api/auth";
 import { transferAmount } from "@/api/transaction";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import {
   Alert,
@@ -27,6 +27,7 @@ const TransferScreen = () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      router.dismissTo("/(tabs)/users");
     },
     onError: (error) => {
       console.log("My EROR", error);

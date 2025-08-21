@@ -1,8 +1,11 @@
 import { getProfile } from "@/api/auth";
-import { useQuery } from "@tanstack/react-query";
+import { updateUser } from "@/api/user";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -13,23 +16,48 @@ import {
 } from "react-native";
 
 const ProfileScreen = () => {
+  const queryClient = useQueryClient();
+  const [image, setImage] = useState<string>("");
+
   const { data, isFetching } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
   });
-  console.log("mydata", data);
+  console.log("------> data", data);
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["update-profile"],
+    mutationFn: updateUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+    },
+  });
+
   if (isFetching) return <ActivityIndicator color={"green"} />;
 
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const pickedImage = result.assets[0].uri;
+      setImage(pickedImage);
+
+      mutate(image);
+    }
+  };
+
   const handleWithdraw = () => {
-    router.push({
-      pathname: "/(transactions)/withdraw",
-    });
+    router.push({ pathname: "/(transactions)/withdraw" });
   };
+
   const handleDeposit = () => {
-    router.push({
-      pathname: "/(transactions)/deposit",
-    });
+    router.push({ pathname: "/(transactions)/deposit" });
   };
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -40,7 +68,15 @@ const ProfileScreen = () => {
       >
         <View style={styles.cardHeader}>
           <Text style={styles.bankName}>Banki🫀</Text>
-          <Image source={{ uri: data.image }} style={styles.avatar} />
+          <View style={styles.avatarContainer}>
+            <Image
+              source={{ uri: image || data.image }}
+              style={styles.avatar}
+            />
+            <TouchableOpacity style={styles.editIcon} onPress={pickImage}>
+              <MaterialIcons name="edit" size={12} color="black" />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.cardBody}>
@@ -61,20 +97,25 @@ const ProfileScreen = () => {
           <Text style={styles.validThru}>Valid Thru 12/28</Text>
         </View>
       </LinearGradient>
+
       <View style={styles.actionRow}>
         <TouchableOpacity
           style={[styles.actionButton, { backgroundColor: "#e74c3c" }]}
-          onPress={() => handleWithdraw()}
+          onPress={handleWithdraw}
         >
           <Text style={styles.actionText}>Withdraw</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.actionButton, { backgroundColor: "green" }]}
-          onPress={() => handleDeposit()}
+          onPress={handleDeposit}
         >
           <Text style={styles.actionText}>Deposit</Text>
         </TouchableOpacity>
       </View>
+
+      {isPending && (
+        <ActivityIndicator style={{ marginTop: 20 }} color="green" />
+      )}
     </View>
   );
 };
@@ -89,7 +130,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
   },
-
   card: {
     width: "100%",
     height: 250,
@@ -111,12 +151,29 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff",
   },
+  avatarContainer: {
+    width: 50,
+    height: 50,
+    position: "relative",
+  },
   avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
     borderWidth: 2,
     borderColor: "#fff",
+  },
+  editIcon: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 2,
+  },
+  iconImage: {
+    width: 16,
+    height: 16,
   },
   cardBody: {
     marginTop: 10,
