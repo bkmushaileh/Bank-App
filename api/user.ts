@@ -6,7 +6,7 @@ const getUsers = async () => {
   return res.data;
 };
 
-const updateUser = async (image: FormData) => {
+const updateUser = async (image: string) => {
   const res = await instance.put("/auth/profile", { image });
   return res.data;
 };

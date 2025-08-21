@@ -1,7 +1,7 @@
 import { getProfile } from "@/api/auth";
 import { updateUser } from "@/api/user";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
@@ -16,16 +16,20 @@ import {
 } from "react-native";
 
 const ProfileScreen = () => {
-  const [image, setImage] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const [image, setImage] = useState<string>("");
 
   const { data, isFetching } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
   });
-
+  console.log("------> data", data);
   const { mutate, isPending } = useMutation({
     mutationKey: ["update-profile"],
     mutationFn: updateUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+    },
   });
 
   if (isFetching) return <ActivityIndicator color={"green"} />;
@@ -42,15 +46,7 @@ const ProfileScreen = () => {
       const pickedImage = result.assets[0].uri;
       setImage(pickedImage);
 
-      const formData = new FormData();
-      formData.append("image", {
-        uri: pickedImage,
-        name: "avatar.jpg",
-        type: "image/jpeg",
-      } as any);
-
-      console.log("Submitting formData with image:", pickedImage);
-      mutate(formData);
+      mutate(image);
     }
   };
 
