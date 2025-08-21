@@ -21,7 +21,7 @@ import * as Yup from "yup";
 
 const RegisterSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
-  password: Yup.string().required("Password is required"),
+  password: Yup.string().required("Password is required").min(6, "Error"),
   image: Yup.string().required("Image is required"),
 });
 
@@ -109,7 +109,7 @@ const RegisterScreen = () => {
               placeholder="Please enter your username here.."
               style={styles.input}
               placeholderTextColor="#999"
-              value={values.username}
+              value={values.username.trim()}
             />
             {touched.username && errors.username && (
               <Text style={styles.errorText}>{errors.username}</Text>
@@ -121,7 +121,7 @@ const RegisterScreen = () => {
               style={styles.input}
               placeholderTextColor="#999"
               secureTextEntry
-              value={values.password}
+              value={values.password.trim()}
             />
             {touched.password && errors.password && (
               <Text style={styles.errorText}>{errors.password}</Text>

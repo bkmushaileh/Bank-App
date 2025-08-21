@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
 import React, { useContext, useState } from "react";
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -31,10 +32,15 @@ const LoginScreen = () => {
       router.dismissTo("/(tabs)");
     },
     onError: (err) => {
+      Alert.alert("Error", "Something went wrong. Please try again");
+
       console.log("OPPS!! Something went wrong", err);
     },
   });
   const handleLoginButton = () => {
+    if (userInfo.username == "" || userInfo.password == "")
+      return Alert.alert("Error", "Something went wrong. Please try again");
+
     console.log(userInfo);
     mutate(userInfo);
   };
@@ -56,14 +62,18 @@ const LoginScreen = () => {
         </Text>
 
         <TextInput
-          onChangeText={(text) => setUserInfo({ ...userInfo, username: text })}
+          onChangeText={(text) =>
+            setUserInfo({ ...userInfo, username: text.trim() })
+          }
           placeholder="Please enter your username here.."
           style={styles.input}
           placeholderTextColor="#999"
         />
 
         <TextInput
-          onChangeText={(text) => setUserInfo({ ...userInfo, password: text })}
+          onChangeText={(text) =>
+            setUserInfo({ ...userInfo, password: text.trim() })
+          }
           placeholder="Please enter your password here.."
           style={styles.input}
           placeholderTextColor="#999"

@@ -47,7 +47,7 @@ const _layout = () => {
                 <MaterialIcons name="logout" size={20} color={"green"} />
               </TouchableOpacity>
             </React.Fragment>
-          ),
+          )
         }}
       />
 
@@ -58,7 +58,12 @@ const _layout = () => {
           tabBarIcon: ({ color }) => (
             <Octicons name="credit-card" size={20} color={color} />
           ),
-        }}
+         headerRight: () => (
+          <TouchableOpacity onPress={handleLogOut}>
+                <MaterialIcons name="logout" size={20} color={"green"} />
+              </TouchableOpacity>
+        )}}
+       
       />
 
       <Tabs.Screen
@@ -68,6 +73,11 @@ const _layout = () => {
           tabBarIcon: ({ color }) => (
             <FontAwesome name="users" size={20} color={color} />
           ),
+          headerRight: () => (
+            <TouchableOpacity onPress={handleLogOut}>
+                  <MaterialIcons name="logout" size={20} color={"green"} />
+                </TouchableOpacity>
+          )
         }}
       />
       <Tabs.Screen
@@ -84,6 +94,11 @@ const _layout = () => {
           tabBarIcon: ({ color }) => (
             <FontAwesome6 name="user-large" size={20} color={color} />
           ),
+          headerRight: () => (
+            <TouchableOpacity onPress={handleLogOut}>
+                  <MaterialIcons name="logout" size={20} color={"green"} />
+                </TouchableOpacity>
+          )
         }}
       />
     </Tabs>

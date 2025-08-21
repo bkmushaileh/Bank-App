@@ -35,10 +35,6 @@ export default function RootLayout() {
           />
 
           <Stack.Screen
-            name="components/(Tabs)/Transactions"
-            options={{ title: "Transfer", headerBackTitle: "Users" }}
-          />
-          <Stack.Screen
             name="(transactions)"
             options={{ headerShown: false }}
           />
